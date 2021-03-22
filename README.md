@@ -12,7 +12,7 @@ Example:
 
 To set the timer to 1:30 hours using sound.wav file
 ```
-./pylarma -ho 1 -m 30 -af sound.wav
+./pylarma -ho 1 -m 30 -audio-file sound.wav
 ```
 
 ### TODO list
