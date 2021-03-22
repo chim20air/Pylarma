@@ -1,0 +1,85 @@
+#!/usr/bin/env python
+
+# author: Adrian Evaraldo
+# mail: adreivar@gmail.com
+# version: 0.1
+# license: GPL v3
+
+# TODO
+# - the user must be able to set a time that the alarm must trigger, right now
+# is functioning as a timer
+# - When the space is pressed, the alarm sound must stop inmediately
+# - improve keylogger
+# - many more things
+
+
+from datetime import datetime, timedelta, time
+from time import sleep
+import argparse
+from playsound import playsound
+from pynput import keyboard
+
+global tecla
+tecla = 0
+def on_press(key):
+    global tecla
+    k = str(key).replace("'", "")
+
+    if k == 'Key.enter':
+         tecla = 1
+    elif k == 'Key.space':
+        tecla = 2
+
+listener = keyboard.Listener(on_press=on_press)
+listener.start()
+
+#------------------------------------------------------------------------------
+# Setup parser
+#------------------------------------------------------------------------------
+parser = argparse.ArgumentParser(description="Some python based alarm",
+        epilog="""First beta version of an alarm-ish python module,
+        authored by Adrian Evaraldo (adrievar@gmail.com)""")
+parser.add_argument('-ho', '--hour', type=int, required=True,
+        help='sets the amount of hours in which the alarm will trigger')
+parser.add_argument('-m', '--min', type=int, required=True,
+        help='sets the amount of minutes in which the alarm will trigger')
+parser.add_argument('-af', '--audio-file', type=str, required=True,
+        help='the audio file to be played')
+args = parser.parse_args()
+
+#------------------------------------------------------------------------------
+# Setup the player
+#------------------------------------------------------------------------------
+
+sonido = args.audio_file
+
+#------------------------------------------------------------------------------
+# Getting time
+#------------------------------------------------------------------------------
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+print("Current time: ", current_time)
+
+delta = timedelta(hours=args.hour, minutes=args.min)
+wait = now + delta
+
+print("The alarm will be set at: ", wait)
+
+
+w = wait - datetime.now()
+
+
+print("Press <enter> to know how much time until alarm start playing")
+
+while w.days >= 0:
+    w = wait - datetime.now()
+    if(tecla == 1):
+        print("The alarm will start in: ", w)
+        print("Press <enter> to know how much time until alarm start playing")
+        tecla = 0
+    sleep(1)
+print("Press <space> to stop playing the alarm")
+while tecla != 2:
+    playsound(sonido)
+
+print("Alarm Finished")
