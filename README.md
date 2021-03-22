@@ -19,4 +19,7 @@ To set the timer to 1:30 hours using sound.wav file
 - [ ] the script must be able to work either as an alarm or a timer
 - [ ] When the space is pressed, the alarm sound must stop inmediately
 - [ ] improve keylogger
+- [ ] setup a daemon
+- [ ] set alarm at specific time for specific days
+- [ ] permanently record the audio file to be played
 - [ ] many more things
